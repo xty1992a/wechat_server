@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>home</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="/css/reset.css">
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.21/vue.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@1.4/lib/index.css">
+  <!-- 引入组件 -->
+  <script src="https://cdn.jsdelivr.net/npm/vant@1.4/lib/vant.min.js"></script>
+  <script src="https://cdn.bootcss.com/eruda/1.5.4/eruda.js"></script>
+  <script>eruda.init()</script>
+</head>
+<body>
+<style>
+  body {
+    background-color: #f7f7f7;
+  }
+
+  img, canvas {
+    width: 300px;
+    height: 300px;
+  }
+
+  header {
+    background-color: #fff;
+    padding: 10px;
+    display: flex;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .panel {
+    background-color: #fff;
+    padding: 10px;
+  }
+
+  .block {
+    padding: 15px 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 10px;
+  }
+
+  h3 {
+    text-align: center;
+    padding: 10px;
+  }
+</style>
+<h3>welcome to home</h3>
+<div id="app">
+
+  <header class="block" v-if="userInfo">
+    <img :src="userInfo.headimgurl" class="avatar" alt="">
+    <div>
+      <p>{{userInfo.nickname}}</p>
+      <p>{{text}}</p>
+    </div>
+  </header>
+  <div class="panel" v-for="item in list">
+    <span>{{item.key}}</span>
+    <span style="padding-left: 10px;">{{item.val}}</span>
+  </div>
+
+  <section class="block">
+    <van-button @click="scan">扫一扫</van-button>
+    <van-button @click="openLocation">打开地图</van-button>
+    <van-button @click="pickImage">选择图片</van-button>
+  </section>
+  <img :src="pickedImage" alt="">
+</div>
+<script type="text/javascript" src="/js/home.js"></script>
+</body>
+</html>
