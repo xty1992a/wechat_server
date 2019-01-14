@@ -53,10 +53,9 @@ router.get('/getUserInfo', async function (req, res) {
 	  message: '缺少必要参数',
 	});
   }
-
 });
 
-router.get('/getWxConfig', async(req, res) => {
+router.get('/getWxConfig', async (req, res) => {
   let config = await wechatApp.getWxConfig(decodeURIComponent(req.query.url));
   if (!config.success) {
 	res.json({
@@ -74,7 +73,31 @@ router.get('/getWxConfig', async(req, res) => {
   }
 });
 
-router.get('/readVoice', async(req, res) => {
+router.get('/getMenus', (req, res) => {
+  wechatApp.getWxMenu(req, res);
+});
+
+router.get('/updateWxMenu', async (req, res) => {
+  console.log('updateWxMenu');
+  try {
+	let result = await wechatApp.updateWxMenu();
+	console.log(result);
+	res.json({
+	  success: true,
+	  message: '更新成功!',
+	  data: null,
+	})
+  } catch (e) {
+	console.log('updateWxMenu error ', e);
+	res.json({
+	  success: false,
+	  message: '更新失败!',
+	  data: e,
+	})
+  }
+});
+
+router.get('/readVoice', async (req, res) => {
   let voiceId = req.query.voiceId;
   wechatApp.getAccessToken()
 	  .then(token => {

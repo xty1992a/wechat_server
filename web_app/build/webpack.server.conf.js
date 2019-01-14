@@ -6,31 +6,18 @@ const webpack = require('webpack');
 const base = require('./webpack.base.conf');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const devMiddleWare = require('webpack-dev-middleware');
+const hotMiddleWare = require('webpack-hot-middleware');
 const root = p => path.join(__dirname, '..', p);
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const config = {
   entry: {
-	app: root('src/index.js'),
+	app: ['webpack-hot-middleware/client', root('src/index.js')],
   },
   resolve: {
 	extensions: ['.js', '.vue', '.json'],
 	alias: {
 	  vue: 'vue/dist/vue.js',
-	},
-  },
-  devServer: {
-	publicPath: '/',
-	compress: true,
-	disableHostCheck: true,
-	hot: true,
-	port: '8080',
-	proxy: {
-	  '/wechat/*': {
-		target: 'http://localhost:3000/',
-		changeOrigin: true,
-		secure: false,
-	  },
 	},
   },
   mode: 'development',
@@ -44,21 +31,28 @@ const config = {
 	}),
 	new webpack.optimize.OccurrenceOrderPlugin(),
 	new webpack.NoEmitOnErrorsPlugin(),
-	new CopyWebpackPlugin([
-	  {
-		from: path.resolve(__dirname, '../static'),
-		to: '',
-		ignore: ['.*'],
-	  },
-	]),
   ],
 };
 
-module.exports = merge(base, {
-  ...config,
-  output: {
-	path: root('../public'),
-	filename: 'js/[name].js',
-	publicPath: '/',
-  },
-});
+module.exports = function (app) {
+  let webpackConfig = merge(base, {
+	...config,
+	output: {
+	  path: root('../public'),
+	  filename: 'js/[name].js',
+	  publicPath: '/',
+	},
+  });
+
+  const compiler = webpack(webpackConfig);
+  app.use(devMiddleWare(compiler, {
+	publicPath: webpackConfig.output.publicPath,
+	stats: {
+	  colors: true,
+	  chunks: false,
+	},
+  }));
+  app.use(hotMiddleWare(compiler));
+  return app;
+};
+

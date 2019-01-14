@@ -27,12 +27,12 @@ export default function request(url, data) {
   return axios(config)
 }
 
-export function loadData(url, data) {
+export function loadData(url, data, toast = true) {
   return new Promise(async resolve => {
 	try {
 	  let res = await request(url, data);
 	  if (res.status === 200 && res.data.success) {
-		Message && Message('成功');
+		toast && Message && Message('成功');
 		resolve({success: true, data: res.data.data || res.data, message: res.data.message || '请求成功!'});
 	  }
 	  resolve({success: false, data: res.data.data || res.data, message: res.data.message || '业务失败!'});

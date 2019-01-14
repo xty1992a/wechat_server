@@ -7,7 +7,7 @@
     },
     {
       "type": "click",
-      "name": "今日推荐",
+      "name": "推荐文章",
       "key": "today_recommend"
     },
     {

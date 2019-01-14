@@ -13,5 +13,13 @@ export default new VueRouter({
 		title: '首页',
 	  },
 	},
+	{
+	  path: '/editMenu',
+	  name: 'editMenu',
+	  component: resolve => require(['./views/editMenu/index.vue'], resolve),
+	  meta: {
+		title: '编辑菜单',
+	  },
+	},
   ],
 })
