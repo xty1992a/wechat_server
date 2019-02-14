@@ -5,6 +5,7 @@ const fs = require('fs');
 const request = require('request');
 const config = require('../config');//引入配置文件
 const wechat = require('../wechat/wechat');
+const util = require('util');
 
 const wechatApp = new wechat(config); //实例wechat 模块
 //用于处理所有进入 /wechat  get 的连接请求
@@ -77,24 +78,24 @@ router.get('/getMenus', (req, res) => {
   wechatApp.getWxMenu(req, res);
 });
 
-router.get('/updateWxMenu', async (req, res) => {
-  console.log('updateWxMenu');
+router.post('/updateWxMenu', async (req, res) => {
+  console.log('updateWxMenu', req.body);
+  fs.writeFile(path.resolve(__dirname, '../data/updateWxMenu.text'), util.inspect(req), function (err) {
+	if (err) console.log(err);
+  });
+  let flag = true;
   try {
-	let result = await wechatApp.updateWxMenu();
-	console.log(result);
-	res.json({
-	  success: true,
-	  message: '更新成功!',
-	  data: null,
-	})
+	flag = await wechatApp.updateWxMenu();
   } catch (e) {
 	console.log('updateWxMenu error ', e);
-	res.json({
-	  success: false,
-	  message: '更新失败!',
-	  data: e,
-	})
+	flag = false;
   }
+  console.log(flag);
+  res.json({
+	success: flag,
+	message: flag ? '更新成功!' : '更新失败!',
+	data: null,
+  })
 });
 
 router.get('/readVoice', async (req, res) => {

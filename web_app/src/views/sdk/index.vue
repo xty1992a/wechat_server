@@ -38,8 +38,8 @@
   import AlloyTouch from 'alloytouch'
   import {VueCropper} from 'vue-cropper'
 
-  import AddressBlock from '../components/AddressBlock'
-  import {getWxConfig} from '../api'
+  import AddressBlock from '../../components/AddressBlock'
+  import {getWxConfig} from '../../api'
 
   const jsApiList = [
 	'scanQRCode', 'openLocation',

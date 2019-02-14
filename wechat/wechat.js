@@ -111,7 +111,20 @@ let WeChat = function (config) {
  */
 WeChat.prototype.auth = function (req, res) {
   console.log('auth');
-  this.updateWxMenu(data)
+  this.getAccessToken()
+	  .then((data) => {
+		//格式化请求连接
+		let url = util.format(this.apiURL.createMenu, this.apiDomain, data);
+		//使用 Post 请求创建微信菜单
+		this.requestPost(url, JSON.stringify(menus))
+			.then(data => {
+			  //将结果打印
+			  console.log(data, JSON.stringify(menus));
+			})
+			.catch(err => {
+			  console.log('[error] weChat request ' + url, err);
+			})
+	  });
 
   //1.获取微信服务器Get请求的参数 signature、timestamp、nonce、echostr
   let signature = req.query.signature,//微信加密签名
@@ -176,9 +189,6 @@ WeChat.prototype.getAccessToken = function () {
   });
 };
 
-/*
-* 获取微信 js_api_ticket
-*/
 WeChat.prototype.getJSApiTicket = function () {
   let that = this;
   return new Promise(async resolve => {
@@ -296,9 +306,9 @@ WeChat.prototype.handleMsg = function (req, res) {
 				console.log('shop main hostname', req.hostname);
 				reportMsg = msg.graphicMsg(fromUser, toUser, [
 				  {
-					Title: 'vue项目 首页', Description: '项目首页',
+					Title: 'vue项目 首页', Description: `项目首页 http://${req.hostname}`,
 					PicUrl: '',
-					Url: `http://${req.hostname}/`,
+					Url: 'https://wechat.redbuck.cn/',
 				  },
 				]);
 				break;
@@ -343,20 +353,10 @@ WeChat.prototype.handleMsg = function (req, res) {
   });
 }
 
-/*
-* 获取用户信息
-*/
-WeChat.prototype.getUserInfo = async (accessToken, openId) => await getUserInfo(accessToken, openId);
+WeChat.prototype.getWebToken = async(code) => await getToken(code);
 
-/*
-*  获取页面access_token
-* @param {code} 页面跳转之后返回的code
-*/
-WeChat.prototype.getWebToken = async (code) => await getToken(code);
+WeChat.prototype.getUserInfo = async(accessToken, openId) => await getUserInfo(accessToken, openId);
 
-/*
-* 获取微信API注册信息
-*/
 WeChat.prototype.getWxConfig = async function (url) {
   let timestamp = createTimeStamp()
   let nonceStr = createNonceStr()
@@ -372,24 +372,6 @@ WeChat.prototype.getWxConfig = async function (url) {
 	jsApiList: [], // 必填，需要使用的JS接口列表
   }
   return Promise.resolve({success: true, data: option})
-};
-
-/*
-* 更新微信菜单
-*/
-WeChat.prototype.updateWxMenu = async function () {
-  let token = await this.getAccessToken();
-  let url = util.format(this.apiURL.createMenu, this.apiDomain, token);
-  //使用 Post 请求创建微信菜单
-  return this.requestPost(url, JSON.stringify(menus));
-};
-
-WeChat.prototype.getWxMenu = async function (req, res) {
-  res.json({
-	success: true,
-	data: menus,
-	message: '获取成功!',
-  })
 };
 
 function getToken(code) {

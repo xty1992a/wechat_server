@@ -6,9 +6,9 @@ Vue.use(VueRouter);
 export default new VueRouter({
   routes: [
 	{
-	  path: '/',
-	  name: 'home',
-	  component: resolve => require(['./views/home.vue'], resolve),
+	  path: '/js_sdk',
+	  name: 'sdk',
+	  component: () => import(/* webpackChunkName: "home/sdk" */'./views/sdk/index.vue'),// resolve => require(['./views/sdk/index.vue'], resolve),
 	  meta: {
 		title: '首页',
 	  },
@@ -16,7 +16,7 @@ export default new VueRouter({
 	{
 	  path: '/editMenu',
 	  name: 'editMenu',
-	  component: resolve => require(['./views/editMenu/index.vue'], resolve),
+	  component: () => import(/* webpackChunkName: "home/edit" */'./views/sdk/index.vue'),
 	  meta: {
 		title: '编辑菜单',
 	  },

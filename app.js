@@ -2,7 +2,13 @@ const express = require('express');
 const path = require('path');
 // const webpackMiddleware = require('./web_app/build/webpack.dev.conf');
 
+var bodyParser = require('body-parser');
 const app = express();//实例express框架
+
+app.use(bodyParser.json({limit: '1mb'}));  //body-parser 解析json格式数据
+app.use(bodyParser.urlencoded({            //此项必须在 bodyParser.json 下面,为参数编码
+  extended: true,
+}));
 
 // webpackMiddleware(app);
 // app.set('views', path.join(__dirname, 'views'));
