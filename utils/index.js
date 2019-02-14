@@ -1,12 +1,22 @@
 const url = require('url');
 
+function getClientIp(req) {
+  return req.headers && req.headers['x-forwarded-for'] ||
+	  req.connection.remoteAddress ||
+	  req.socket.remoteAddress ||
+	  req.connection.socket.remoteAddress;
+}
+
 module.exports = {
-  fullUrl: function (req, opt = {}) {
-	return url.format({
+  getClientIp,
+  fullUrl: function (req, opt = {host: 'wechat.redbuck.cn'}) {
+	let result = url.format({
 	  protocol: req.protocol,
-	  host: req.get('host'),
+	  host: opt.host || req.get('host'),
 	  pathname: req.originalUrl,
-	}, opt);
+	});
+	console.log('client ip', req.get('x-forwarded-for'));
+	return result
   },
   isWechat: function (req) {
 	return /MicroMessenger/i.test(req.get('user-agent').toLowerCase());

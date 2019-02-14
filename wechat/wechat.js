@@ -306,7 +306,7 @@ WeChat.prototype.handleMsg = function (req, res) {
 				console.log('shop main hostname', req.hostname);
 				reportMsg = msg.graphicMsg(fromUser, toUser, [
 				  {
-					Title: 'vue项目 首页', Description: `项目首页 http://${req.hostname}`,
+					Title: 'vue项目 首页', Description: `项目首页 https://wechat.redbuck.cn/`,
 					PicUrl: '',
 					Url: 'https://wechat.redbuck.cn/',
 				  },
@@ -353,9 +353,9 @@ WeChat.prototype.handleMsg = function (req, res) {
   });
 }
 
-WeChat.prototype.getWebToken = async(code) => await getToken(code);
+WeChat.prototype.getWebToken = async (code) => await getToken(code);
 
-WeChat.prototype.getUserInfo = async(accessToken, openId) => await getUserInfo(accessToken, openId);
+WeChat.prototype.getUserInfo = async (accessToken, openId) => await getUserInfo(accessToken, openId);
 
 WeChat.prototype.getWxConfig = async function (url) {
   let timestamp = createTimeStamp()
