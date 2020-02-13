@@ -4,7 +4,7 @@
   "description": "使用 Node.js开发微信",
   "main": "app.js",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "body-parser": "^1.18.3",
     "eruda": "^2.2.0",
     "express": "^4.15.3",
