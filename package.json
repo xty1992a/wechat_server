@@ -31,6 +31,9 @@
     "postcss-loader": "^3.0.0",
     "style-loader": "^0.23.1",
     "svg-sprite-loader": "^4.1.3",
+    "prettier": "^1.17.0",
+    "pretty-quick": "^1.10.0",
+    "husky": "^1.3.1",
     "vue-loader": "^15.4.2",
     "vue-template-compiler": "^2.5.21",
     "webpack": "^4.28.1",
@@ -46,6 +49,11 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SilenceHVK/wechatByNode.git"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   },
   "author": "H-VK",
   "license": "ISC",
