@@ -9,7 +9,7 @@ function getClientIp(req) {
 
 module.exports = {
   getClientIp,
-  fullUrl: function (req, opt = {host: 'wechat.redbuck.cn'}) {
+  fullUrl: function (req, opt = {host: 'wechat.frp.zzp.ink'}) {
 	let result = url.format({
 	  protocol: req.protocol,
 	  host: opt.host || req.get('host'),
